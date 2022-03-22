@@ -1,8 +1,16 @@
 <?php
 
 $con = new mysqli("localhost", "root", "", "my_db");
-if ($con->connect_error)
-    die("Connection error" . $con->connect_error);
+
+$sql_person = "SELECT * FROM person_records";
+$result_person = $con->query($sql_person);
+
+$sql_employee = "SELECT * FROM employees";
+$result_employee = $con->query($sql_employee);
+
+$sql_select = "SELECT * FROM person_records";
+$result_select = $con->query($sql_select);
+$message = '';
 
 if (
     isset($_POST["firstName"]) && $_POST["firstName"] !== ""
@@ -13,12 +21,17 @@ $sql_person = "INSERT INTO person_records (first_name,last_name, date_of_birth) 
 $con->query($sql_person);
 endif;
 
-$sql_person = "SELECT * FROM person_records";
-$result_person = $con->query($sql_person);
+if(isset($_POST['submit'])) 
+{
+    $person_id = $_POST['person_id'];
+    $position = $_POST['position'];
+    $salary = $_POST['salary'];
 
-$sql_employee = "SELECT * FROM employees";
-$result_employee = $con->query($sql_employee);
+    $insert = "INSERT INTO employees (person_id, position, salary) VALUES ('$person_id', '$position', '$salary')";
+    
+}
 ?>
+
 <html>
 
 <head>
@@ -36,6 +49,10 @@ $result_employee = $con->query($sql_employee);
     <div class="container">
         <h1>Person Database</h1>
         <table>
+            <colgroup>
+                <col span="1" class="col-n">
+                <col span="3" class="col-w">
+            </colgroup>
             <tr>
                 <th>Person ID</th>
                 <th>First Name</th>
@@ -46,12 +63,12 @@ $result_employee = $con->query($sql_employee);
         while ($row = $result_person->fetch_assoc()) :
         ?>
             <tr>
-                <td class="center"><?= $row["person_id"] ?></td>
+                <td><?= $row["person_id"] ?></td>
                 <td><?= $row["first_name"] ?></td>
                 <td><?= $row["last_name"] ?></td>
-                <td class="center"><?= $row["date_of_birth"] ?></td>
+                <td><?= $row["date_of_birth"] ?></td>
             </tr>
-            <?php
+            <?php 
         endwhile;
         ?>
         </table>
@@ -63,23 +80,28 @@ $result_employee = $con->query($sql_employee);
             <input id="lastName" name="lastName">
             <label for="dateOfBirth">Date of Birth</label>
             <input id="dateOfBirth" name="dateOfBirth">
-            <button type="submit">Submit</button>
+            <button type="submit" name="submit">Submit</button>
         </form>
         <h1>Employee Database</h1>
         <table>
+            <colgroup>
+                <col span="2" class="col-n">
+                <col span="1">
+                <col span="1" class="col-n">
+            </colgroup>
             <tr>
                 <th>Employee ID</th>
                 <th>Person ID</th>
-                <th>Role</th>
+                <th>Position</th>
                 <th>Salary</th>
             </tr>
             <?php
         while ($row = $result_employee->fetch_assoc()) :
         ?>
             <tr>
-                <td class="center"><?= $row["employee_id"] ?></td>
-                <td class="center"><?= $row["person_id"] ?></td>
-                <td><?= $row["role"] ?></td>
+                <td><?= $row["employee_id"] ?></td>
+                <td><?= $row["person_id"] ?></td>
+                <td><?= $row["position"] ?></td>
                 <td><?= $row["salary"] ?></td>
             </tr>
             <?php
@@ -89,12 +111,17 @@ $result_employee = $con->query($sql_employee);
         <h2>Add an employee:</h2>
         <form method="POST">
             <label for="personRecord">Person Record</label>
-            <select id="firstName" name="firstName"></select>
-            <label for="role">Role</label>
-            <input id="role" name="role">
+            <select name="person_id" id="personRecord">
+                <option>Select a person</option>
+                <?php foreach($result_select as $key => $value) { ?>
+                <option value="<?=$value['person_id'];?>"><?=$value['first_name'], ' ', $value['last_name'];?></option>
+                <?php } ?>
+            </select>
+            <label for="position">Position</label>
+            <input id="position" name="position">
             <label for="salary">Salary</label>
             <input id="salary" name="salary">
-            <button type="submit">Submit</button>
+            <button type="submit" name="submit">Submit</button>
         </form>
     </div>
 </body>

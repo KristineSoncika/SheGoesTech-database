@@ -1,4 +1,6 @@
-* {
+*,
+*::after,
+*::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -13,9 +15,9 @@ body {
   font-family: "Courier New", Courier, monospace;
 }
 
-/* div {
-  width: 70%;
-} */
+.container {
+  width: 920px;
+}
 
 h1 {
   margin-bottom: 1rem;
@@ -31,7 +33,7 @@ table {
 td,
 th {
   border: 1px solid black;
-  text-align: left;
+  text-align: center;
   padding: 8px 15px;
 }
 
@@ -39,12 +41,20 @@ tr:nth-child(even) {
   background-color: rgb(204, 165, 165);
 }
 
-.center {
-  text-align: center;
+.col-n {
+  width: 170px;
+}
+
+.col-w {
+  width: 250px;
 }
 
 form {
   margin: 1rem 0 4rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 input {
@@ -53,15 +63,14 @@ input {
   border: none;
   background-color: rgb(188, 216, 207);
   padding: 5px;
-  font-family: "Courier New", Courier, monospace;
+  font-family: inherit;
   font-size: 1.1rem;
   color: teal;
-  letter-spacing: 1px;
-  width: 150px;
+  width: 165px;
 }
 
 button {
-  font-family: "Courier New", Courier, monospace;
+  font-family: inherit;
   border-radius: 5px;
   height: 30px;
   padding: 5px 7px;
@@ -75,4 +84,16 @@ button {
 
 button:hover {
   font-weight: 700;
+}
+
+select {
+  background-color: rgb(188, 216, 207);
+  color: teal;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  height: 30px;
+  width: 200px;
+  font-family: inherit;
+  font-size: 1.1rem;
 }
