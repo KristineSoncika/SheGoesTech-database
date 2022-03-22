@@ -10,7 +10,6 @@ $result_employee = $con->query($sql_employee);
 
 $sql_select = "SELECT * FROM person_records";
 $result_select = $con->query($sql_select);
-$message = '';
 
 if (
     isset($_POST["firstName"]) && $_POST["firstName"] !== ""
@@ -27,8 +26,8 @@ if(isset($_POST['submit']))
     $position = $_POST['position'];
     $salary = $_POST['salary'];
 
-    $insert = "INSERT INTO employees (person_id, position, salary) VALUES ('$person_id', '$position', '$salary')";
-    
+    $insert = "INSERT INTO employees (person_id, position, salary) VALUES ('{$person_id}', '{$position}', '{$salary}')";
+    $con->query($insert);
 }
 ?>
 
